@@ -8,9 +8,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.guilherme.springbootionicbackend.domain.Category;
+import com.guilherme.springbootionicbackend.domain.City;
 import com.guilherme.springbootionicbackend.domain.Product;
+import com.guilherme.springbootionicbackend.domain.State;
 import com.guilherme.springbootionicbackend.repositories.CategoryRepository;
+import com.guilherme.springbootionicbackend.repositories.CityRepository;
 import com.guilherme.springbootionicbackend.repositories.ProductRepository;
+import com.guilherme.springbootionicbackend.repositories.StateRepository;
 
 @SpringBootApplication
 public class SpringbootIonicBackendApplication implements CommandLineRunner {
@@ -20,6 +24,12 @@ public class SpringbootIonicBackendApplication implements CommandLineRunner {
 	
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Autowired
+	private StateRepository stateRepository;
+	
+	@Autowired
+	private CityRepository cityRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootIonicBackendApplication.class, args);
@@ -44,6 +54,23 @@ public class SpringbootIonicBackendApplication implements CommandLineRunner {
 		
 		categoryRepository.saveAll(Arrays.asList(cat1, cat2));
 		productRepository.saveAll(Arrays.asList(P1, P2, P3));
+		
+		State stt1 = new State(null, "Minas Gerais");
+		State stt2 = new State(null, "Sao Paulo"); 
+		
+		City cty1 = new City(null, "Uberlandia", stt1); 
+		City cty2 = new City(null, "Sao Paulo", stt2); 
+		City cty3 = new City(null, "Campinas", stt2); 
+		
+		stt1.getCities().addAll(Arrays.asList(cty1));
+		stt2.getCities().addAll(Arrays.asList(cty2, cty3));
+		
+		stateRepository.saveAll(Arrays.asList(stt1, stt2));
+		cityRepository.saveAll(Arrays.asList(cty1, cty2, cty3));
+		
+		
+		
+		
 	}
 
 }
