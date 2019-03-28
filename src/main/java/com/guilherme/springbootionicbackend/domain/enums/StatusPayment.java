@@ -1,13 +1,12 @@
 package com.guilherme.springbootionicbackend.domain.enums;
 
-public enum ClientType {
+public enum StatusPayment {
 
-	NATURALPERSON(1, "Pessoa Física"), JURIDICALPERSON(2, "Pessoa Jurídica");
-
+	PENDING(1, "Pendente"), SETTLED(2, "Quitado"), CANCELED(3, "Cancelado");
 	private int cod;
 	private String description;
 
-	private ClientType(int cod, String description) {
+	private StatusPayment(int cod, String description) {
 		this.cod = cod;
 		this.description = description;
 	}
@@ -20,12 +19,12 @@ public enum ClientType {
 		return description;
 	}
 
-	public static ClientType toEnum(Integer id) {
+	public static StatusPayment toEnum(Integer id) {
 		if (id == null) {
 			return null;
 		}
 
-		for (ClientType x : ClientType.values()) {
+		for (StatusPayment x : StatusPayment.values()) {
 			if (id.equals(x.getCod())) {
 				return x;
 			}

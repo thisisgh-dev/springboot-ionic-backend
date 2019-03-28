@@ -1,5 +1,6 @@
 package com.guilherme.springbootionicbackend;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +12,21 @@ import com.guilherme.springbootionicbackend.domain.Address;
 import com.guilherme.springbootionicbackend.domain.Category;
 import com.guilherme.springbootionicbackend.domain.City;
 import com.guilherme.springbootionicbackend.domain.Client;
+import com.guilherme.springbootionicbackend.domain.Payment;
+import com.guilherme.springbootionicbackend.domain.PaymentWithCard;
+import com.guilherme.springbootionicbackend.domain.PaymentWithTicket;
 import com.guilherme.springbootionicbackend.domain.Product;
+import com.guilherme.springbootionicbackend.domain.PurchaseOrder;
 import com.guilherme.springbootionicbackend.domain.State;
 import com.guilherme.springbootionicbackend.domain.enums.ClientType;
+import com.guilherme.springbootionicbackend.domain.enums.StatusPayment;
 import com.guilherme.springbootionicbackend.repositories.AddressRepository;
 import com.guilherme.springbootionicbackend.repositories.CategoryRepository;
 import com.guilherme.springbootionicbackend.repositories.CityRepository;
 import com.guilherme.springbootionicbackend.repositories.ClientRepository;
+import com.guilherme.springbootionicbackend.repositories.PaymentRepository;
 import com.guilherme.springbootionicbackend.repositories.ProductRepository;
+import com.guilherme.springbootionicbackend.repositories.PurchaseOrderRepository;
 import com.guilherme.springbootionicbackend.repositories.StateRepository;
 
 @SpringBootApplication
@@ -41,6 +49,12 @@ public class SpringbootIonicBackendApplication implements CommandLineRunner {
 
 	@Autowired
 	private AddressRepository addressRepository;
+	
+	@Autowired
+	private PurchaseOrderRepository pucheaseOrderRepository;
+	
+	@Autowired
+	private PaymentRepository paymentRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootIonicBackendApplication.class, args);
@@ -88,5 +102,24 @@ public class SpringbootIonicBackendApplication implements CommandLineRunner {
 
 		clientRepository.saveAll(Arrays.asList(cli1));
 		addressRepository.saveAll(Arrays.asList(ad1, ad2));
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		PurchaseOrder order1 = new PurchaseOrder(null, sdf.parse("30/09/2017 10:32"), cli1, ad1);
+		PurchaseOrder order2 = new PurchaseOrder(null, sdf.parse("10/10/2017 19:35"), cli1, ad2);
+		
+		cli1.getOrders().addAll(Arrays.asList(order1, order2));
+		
+		Payment pay1 = new PaymentWithCard(null, StatusPayment.SETTLED, order1, 6);
+		
+		order1.setPayment(pay1);
+		
+		Payment pay2 = new PaymentWithTicket(null, StatusPayment.PENDING, order2, sdf.parse("20/10/2017 00:00"), null);
+		
+		order2.setPayment(pay2);
+		
+		pucheaseOrderRepository.saveAll(Arrays.asList(order1, order2));
+		paymentRepository.saveAll(Arrays.asList(pay1, pay2));
+
 	}
 }

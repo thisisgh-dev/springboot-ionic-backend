@@ -29,13 +29,16 @@ public class Client implements Serializable {
 	private String cpfOrCnpj;
 	private Integer Type;
 
-	@JsonManagedReference 
+	@JsonManagedReference
 	@OneToMany(mappedBy = "client")
 	private List<Address> addresses = new ArrayList<>();
 
 	@ElementCollection
 	@CollectionTable(name = "phoneNumber")
 	private Set<String> phoneNumber = new HashSet<>();
+
+	@OneToMany(mappedBy = "client")
+	private List<PurchaseOrder> orders = new ArrayList<>();
 
 	public Client() {
 	}
@@ -105,6 +108,14 @@ public class Client implements Serializable {
 		this.phoneNumber = phoneNumber;
 	}
 
+	public List<PurchaseOrder> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<PurchaseOrder> orders) {
+		this.orders = orders;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -129,5 +140,4 @@ public class Client implements Serializable {
 			return false;
 		return true;
 	}
-
 }
