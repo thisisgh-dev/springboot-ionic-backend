@@ -12,6 +12,7 @@ import com.guilherme.springbootionicbackend.domain.Address;
 import com.guilherme.springbootionicbackend.domain.Category;
 import com.guilherme.springbootionicbackend.domain.City;
 import com.guilherme.springbootionicbackend.domain.Client;
+import com.guilherme.springbootionicbackend.domain.ItemOrder;
 import com.guilherme.springbootionicbackend.domain.Payment;
 import com.guilherme.springbootionicbackend.domain.PaymentWithCard;
 import com.guilherme.springbootionicbackend.domain.PaymentWithTicket;
@@ -24,6 +25,7 @@ import com.guilherme.springbootionicbackend.repositories.AddressRepository;
 import com.guilherme.springbootionicbackend.repositories.CategoryRepository;
 import com.guilherme.springbootionicbackend.repositories.CityRepository;
 import com.guilherme.springbootionicbackend.repositories.ClientRepository;
+import com.guilherme.springbootionicbackend.repositories.ItemOrderRepository;
 import com.guilherme.springbootionicbackend.repositories.PaymentRepository;
 import com.guilherme.springbootionicbackend.repositories.ProductRepository;
 import com.guilherme.springbootionicbackend.repositories.PurchaseOrderRepository;
@@ -55,6 +57,10 @@ public class SpringbootIonicBackendApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PaymentRepository paymentRepository;
+	
+	@Autowired
+	private ItemOrderRepository itemOrderRepository;
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootIonicBackendApplication.class, args);
@@ -120,6 +126,19 @@ public class SpringbootIonicBackendApplication implements CommandLineRunner {
 		
 		pucheaseOrderRepository.saveAll(Arrays.asList(order1, order2));
 		paymentRepository.saveAll(Arrays.asList(pay1, pay2));
+		
+		ItemOrder it1 = new ItemOrder(order1, P1, 0.00, 1, 2000.00);
+		ItemOrder it2 = new ItemOrder(order1, P3, 0.00, 2, 80.00);
+		ItemOrder it3 = new ItemOrder(order1, P2 , 100.00, 1, 800.00);
+		
+		order1.getItens().addAll(Arrays.asList(it1, it2));
+		order2.getItens().addAll(Arrays.asList(it3));
+		
+		 P1.getItens().addAll(Arrays.asList(it1));
+		 P2.getItens().addAll(Arrays.asList(it3)); 
+		 P3.getItens().addAll(Arrays.asList(it2)); 
+		 
+		 itemOrderRepository.saveAll(Arrays.asList(it1, it2, it3));
 
 	}
 }
