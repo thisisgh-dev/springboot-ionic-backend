@@ -3,10 +3,12 @@ package com.guilherme.springbootionicbackend.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.guilherme.springbootionicbackend.domain.Category;
 import com.guilherme.springbootionicbackend.repositories.CategoryRepository;
+import com.guilherme.springbootionicbackend.services.exceptions.DataIntegrityException;
 import com.guilherme.springbootionicbackend.services.exceptions.ObjectNotFountException;
 
 @Service
@@ -29,7 +31,18 @@ public class CategoryService {
 	public Category update(Category obj) {
 		find(obj.getId());
 		return repo.save(obj);
-		
+
+	}
+	
+	public void delete(Integer id) {
+		find(id);
+		try {
+		repo.deleteById(id);
+		}
+		catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("It is not possible to exclude a category containing products.");
+			
+		}
 	}
 }
 	
