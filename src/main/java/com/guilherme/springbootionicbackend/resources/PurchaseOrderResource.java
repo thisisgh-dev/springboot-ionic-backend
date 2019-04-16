@@ -11,9 +11,9 @@ import com.guilherme.springbootionicbackend.domain.PurchaseOrder;
 import com.guilherme.springbootionicbackend.services.PurchaseOrderService;
 
 @RestController
-@RequestMapping(value = "/order")
+@RequestMapping(value = "/orders")
 public class PurchaseOrderResource {
-	
+
 	@Autowired
 	private PurchaseOrderService service;
 
