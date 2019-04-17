@@ -27,7 +27,7 @@ public class Client implements Serializable {
 	private String name;
 	private String email;
 	private String cpfOrCnpj;
-	private Integer Type;
+	private Integer type;
 
 	// @JsonManagedReference
 	@OneToMany(mappedBy = "client")
@@ -50,7 +50,7 @@ public class Client implements Serializable {
 		this.name = name;
 		this.email = email;
 		this.cpfOrCnpj = cpfOrCnpj;
-		Type = type.getCod();
+		this.type = (type == null) ? null : type.getCod();
 	}
 
 	public Integer getId() {
@@ -86,11 +86,11 @@ public class Client implements Serializable {
 	}
 
 	public ClientType getType() {
-		return ClientType.toEnum(Type);
+		return ClientType.toEnum(type);
 	}
 
 	public void setType(ClientType type) {
-		Type = type.getCod();
+		this.type = type.getCod();
 	}
 
 	public List<Address> getAddresses() {
