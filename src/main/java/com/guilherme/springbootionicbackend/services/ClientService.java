@@ -64,4 +64,3 @@ public class ClientService {
 		return new Client(objDto.getId(), objDto.getName(), objDto.getEmail(), null, null);
 	}
 }
- 	

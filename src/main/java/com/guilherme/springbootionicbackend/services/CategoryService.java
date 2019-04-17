@@ -30,37 +30,37 @@ public class CategoryService {
 	public Category insert(Category obj) {
 		obj.setId(null);
 		return repo.save(obj);
-		
 	}
-	
-	public Category update(Category obj) {
-		find(obj.getId());
-		return repo.save(obj);
 
+	public Category update(Category obj) {
+		Category newObj = find(obj.getId());
+		updateData(newObj, obj);
+		return repo.save(newObj);
 	}
-	
+
+	private void updateData(Category newObj, Category obj) {
+		newObj.setName(obj.getName());
+	}
+
 	public void delete(Integer id) {
 		find(id);
 		try {
-		repo.deleteById(id);
-		}
-		catch (DataIntegrityViolationException e) {
+			repo.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("It is not possible to exclude a category containing products.");
-			
 		}
 	}
-	
-	public List<Category> findAll(){
+
+	public List<Category> findAll() {
 		return repo.findAll();
 	}
-	
-	public Page<Category> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+
+	public Page<Category> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		return repo.findAll(pageRequest);		
+		return repo.findAll(pageRequest);
 	}
-	
+
 	public Category fromDto(CategoryDTO objDto) {
-		return  new Category(objDto.getId(), objDto.getName());
+		return new Category(objDto.getId(), objDto.getName());
 	}
 }
-	
