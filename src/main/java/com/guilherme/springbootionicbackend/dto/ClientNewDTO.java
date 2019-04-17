@@ -2,20 +2,43 @@ package com.guilherme.springbootionicbackend.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.guilherme.springbootionicbackend.services.validation.ClientInsert;
+
+@ClientInsert
 public class ClientNewDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@NotEmpty (message = "This field can not be empty")
+	@Length (min = 5, max = 120, message = "The size must be between 5 and 120 characters")
 	private String name;
+	
+	@NotEmpty (message = "This field can not be empty")
+	@Email (message = "Invalid Email")
 	private String email;
+	
+	@NotEmpty (message = "This field can not be empty")
 	private String cpfOrCnpj;
+	
 	private Integer type;
 
+	@NotEmpty (message = "This field can not be empty")
 	private String streetAddress;
+
+	@NotEmpty (message = "This field can not be empty")
 	private String number;
+
 	private String complement;
 	private String neighborhood;
+	
+	@NotEmpty (message = "This field can not be empty")
 	private String zipCode;
 
+	@NotEmpty (message = "This field can not be empty")
 	private String telephone1;
 	private String telephone2;
 
