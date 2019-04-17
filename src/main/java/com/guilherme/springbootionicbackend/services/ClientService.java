@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.guilherme.springbootionicbackend.domain.Address;
 import com.guilherme.springbootionicbackend.domain.City;
@@ -35,6 +36,7 @@ public class ClientService {
 		return obj.orElseThrow(() -> new ObjectNotFountException("Object not found! Id: " + id + ", Type: " + Client.class.getName()));
 	}
 	
+	@Transactional
 	public Client insert(Client obj) {
 		obj.setId(null);
 		repo.save(obj);
@@ -61,7 +63,7 @@ public class ClientService {
 		repo.deleteById(id);
 		}
 		catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("It is not possible to exclude because there are related entities.");
+			throw new DataIntegrityException("It is not possible to exclude because there are related order.");
 			
 		}
 	}
