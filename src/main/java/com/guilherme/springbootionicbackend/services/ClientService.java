@@ -10,8 +10,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.guilherme.springbootionicbackend.domain.Address;
+import com.guilherme.springbootionicbackend.domain.City;
 import com.guilherme.springbootionicbackend.domain.Client;
+import com.guilherme.springbootionicbackend.domain.enums.ClientType;
 import com.guilherme.springbootionicbackend.dto.ClientDTO;
+import com.guilherme.springbootionicbackend.dto.ClientNewDTO;
+import com.guilherme.springbootionicbackend.repositories.AddressRepository;
 import com.guilherme.springbootionicbackend.repositories.ClientRepository;
 import com.guilherme.springbootionicbackend.services.exceptions.DataIntegrityException;
 import com.guilherme.springbootionicbackend.services.exceptions.ObjectNotFountException;
@@ -22,9 +27,19 @@ public class ClientService {
 	@Autowired
 	private ClientRepository repo;
 
+	@Autowired
+	private AddressRepository addressRepository;
+	
 	public Client find(Integer id) {
 		Optional<Client> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFountException("Object not found! Id: " + id + ", Type: " + Client.class.getName()));
+	}
+	
+	public Client insert(Client obj) {
+		obj.setId(null);
+		repo.save(obj);
+		addressRepository.saveAll(obj.getAddresses());
+		return obj;
 	}
 	
 	public Client update(Client obj) {
@@ -62,5 +77,17 @@ public class ClientService {
 	
 	public Client fromDto(ClientDTO objDto) {
 		return new Client(objDto.getId(), objDto.getName(), objDto.getEmail(), null, null);
+	}
+	
+	public Client fromDto(ClientNewDTO objDto) {
+		Client client = new Client(null, objDto.getName(), objDto.getEmail(), objDto.getCpfOrCnpj(), ClientType.toEnum(objDto.getType()));
+		City city = new City(objDto.getCityId(), null, null);
+		Address address = new Address(null, objDto.getStreetAddress(), objDto.getNumber(), objDto.getComplement(), objDto.getNeighborhood(),objDto.getZipCode(), client, city);
+		client.getAddresses().add(address);
+		client.getPhoneNumber().add(objDto.getTelephone1());
+		if (objDto.getTelephone2()!=null) {
+			client.getPhoneNumber().add(objDto.getTelephone2());
+		}
+		return client;
 	}
 }
