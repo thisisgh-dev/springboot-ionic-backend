@@ -40,10 +40,19 @@ public class ItemOrder implements Serializable {
 		return id.getOrder();
 	}
 
+	public void setPurchaseOrder(PurchaseOrder order) {
+		id.setOrder(order);
+		
+	}
+	
 	public Product getProduct() {
 		return id.getProduct();
 	}
 
+	public void setProduct(Product product) {
+		id.setProduct(product);
+	}
+	
 	public ItemOrderPK getId() {
 		return id;
 	}

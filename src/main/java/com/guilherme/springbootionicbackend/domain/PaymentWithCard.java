@@ -2,9 +2,11 @@ package com.guilherme.springbootionicbackend.domain;
 
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.guilherme.springbootionicbackend.domain.enums.StatusPayment;
 
 @Entity
+@JsonTypeName("PaymentWithCard")
 public class PaymentWithCard extends Payment {
 	private static final long serialVersionUID = 1L;
 
