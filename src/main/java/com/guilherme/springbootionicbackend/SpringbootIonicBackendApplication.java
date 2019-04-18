@@ -76,7 +76,7 @@ public class SpringbootIonicBackendApplication implements CommandLineRunner {
 		Category cat7 = new Category(null, "Perfumaria");
 		
 		Product P1 = new Product(null, "Computador", 2000.00);
-		Product P2 = new Product(null, "Impressora", 8000.00);
+		Product P2 = new Product(null, "Impressora", 800.00);
 		Product P3 = new Product(null, "Mouse", 80.00);
 		Product P4 = new Product(null, "Mesa de escritório", 300.00);
 		Product P5 = new Product(null, "Toalha", 50.00);
@@ -155,7 +155,7 @@ public class SpringbootIonicBackendApplication implements CommandLineRunner {
 
 		ItemOrder it1 = new ItemOrder(order1, P1, 0.00, 1, 2000.00);
 		ItemOrder it2 = new ItemOrder(order1, P3, 0.00, 2, 80.00);
-		ItemOrder it3 = new ItemOrder(order1, P2, 100.00, 1, 800.00);
+		ItemOrder it3 = new ItemOrder(order2, P2, 100.00, 1, 800.00);
 
 		order1.getItens().addAll(Arrays.asList(it1, it2));
 		order2.getItens().addAll(Arrays.asList(it3));
