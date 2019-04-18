@@ -74,20 +74,42 @@ public class SpringbootIonicBackendApplication implements CommandLineRunner {
 		Category cat5 = new Category(null, "Jardinagem");
 		Category cat6 = new Category(null, "Decoraçao");
 		Category cat7 = new Category(null, "Perfumaria");
-
+		
 		Product P1 = new Product(null, "Computador", 2000.00);
 		Product P2 = new Product(null, "Impressora", 8000.00);
 		Product P3 = new Product(null, "Mouse", 80.00);
+		Product P4 = new Product(null, "Mesa de escritório", 300.00);
+		Product P5 = new Product(null, "Toalha", 50.00);
+		Product P6 = new Product(null, "Colcha", 200.00);
+		Product P7 = new Product(null, "TV true color", 1200.00);
+		Product P8 = new Product(null, "Roçadeira", 800.00);
+		Product P9 = new Product(null, "Abajour", 100.00);
+		Product P10 = new Product(null, "Pendente", 180.00);
+		Product P11 = new Product(null, "Shampoo", 90.00);
 
 		cat1.getProducts().addAll(Arrays.asList(P1, P2, P3));
 		cat2.getProducts().addAll(Arrays.asList(P2));
-
-		P1.getCategories().addAll(Arrays.asList(cat1));
-		P2.getCategories().addAll(Arrays.asList(cat1, cat2));
-		P3.getCategories().addAll(Arrays.asList(cat1));
+		cat2.getProducts().addAll(Arrays.asList(P2, P4));
+		cat3.getProducts().addAll(Arrays.asList(P5, P6));
+		cat4.getProducts().addAll(Arrays.asList(P1, P2, P3, P7));
+		cat5.getProducts().addAll(Arrays.asList(P8));
+		cat6.getProducts().addAll(Arrays.asList(P9, P10));
+		cat7.getProducts().addAll(Arrays.asList(P11));
+		
+ 		P1.getCategories().addAll(Arrays.asList(cat1, cat4));
+		P2.getCategories().addAll(Arrays.asList(cat1, cat2, cat4));
+		P3.getCategories().addAll(Arrays.asList(cat1, cat4));
+		P4.getCategories().addAll(Arrays.asList(cat2));
+		P5.getCategories().addAll(Arrays.asList(cat3));
+		P6.getCategories().addAll(Arrays.asList(cat3));
+		P7.getCategories().addAll(Arrays.asList(cat4));
+		P8.getCategories().addAll(Arrays.asList(cat5));
+		P9.getCategories().addAll(Arrays.asList(cat6));
+		P10.getCategories().addAll(Arrays.asList(cat6));
+		P11.getCategories().addAll(Arrays.asList(cat7));	
 
 		categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7));
-		productRepository.saveAll(Arrays.asList(P1, P2, P3));
+		productRepository.saveAll(Arrays.asList(P1, P2, P3,  P4, P5, P6, P7, P8, P9, P10, P11));
 
 		State stt1 = new State(null, "Minas Gerais");
 		State stt2 = new State(null, "Sao Paulo");
