@@ -153,8 +153,8 @@ public class PurchaseOrder implements Serializable {
 		builder.append(", Situação do pagamento: ");
 		builder.append(getPayment().getStatus().getDescription());
 		builder.append("\nDetalhes:\n");
-		for (ItemOrder ip : getItens()) {
-			builder.append(ip.toString());
+		for (ItemOrder io : getItens()) {
+			builder.append(io.toString());
 		}
 		builder.append("Valor total: ");
 		builder.append(nf.format(getValueTotal()));

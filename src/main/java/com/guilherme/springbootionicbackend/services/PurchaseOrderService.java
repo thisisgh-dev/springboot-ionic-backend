@@ -68,7 +68,7 @@ public class PurchaseOrderService {
 			io.setPurchaseOrder(obj);
 		}
 		itemOrderRepository.saveAll(obj.getItens());
-		emailService.sendOrderConfirmationEmail(obj);
+		emailService.sendOrderConfirmationHtmlEmail(obj);
 		return obj;
 		
 		
