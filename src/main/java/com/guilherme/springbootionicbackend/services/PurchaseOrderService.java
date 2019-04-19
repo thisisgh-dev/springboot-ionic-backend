@@ -33,6 +33,9 @@ public class PurchaseOrderService {
 	
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private ClientService clientService;
 
 	public PurchaseOrder find(Integer id) {
 		Optional<PurchaseOrder> obj = repo.findById(id);
@@ -44,6 +47,7 @@ public class PurchaseOrderService {
 	public PurchaseOrder insert(PurchaseOrder obj) {
 		obj.setId(null);
 		obj.setInstant(new Date());
+		obj.setClient(clientService.find(obj.getClient().getId()));
 		obj.getPayment().setStatus(StatusPayment.PENDING);
 		obj.getPayment().setOrder(obj);
 		if (obj.getPayment() instanceof PaymentWithTicket) {
@@ -53,12 +57,15 @@ public class PurchaseOrderService {
 		
 		obj = repo.save(obj);
 		paymentRepository.save(obj.getPayment());
-		for (ItemOrder ip : obj.getItens()) {
-			ip.setDiscount(0.0);
-			ip.setPrice(productService.find(ip.getProduct().getId()).getPrice());
-			ip.setPurchaseOrder(obj);
+		for (ItemOrder io : obj.getItens()) {
+			io.setDiscount(0.0);
+			io.setProduct(productService.find(io.getProduct().getId()));
+			io.setPrice(io.getProduct().getPrice());
+			io.setPrice(productService.find(io.getProduct().getId()).getPrice());
+			io.setPurchaseOrder(obj);
 		}
 		itemOrderRepository.saveAll(obj.getItens());
+		System.out.println(obj);
 		return obj;
 		
 		
