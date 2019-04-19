@@ -8,5 +8,10 @@
     "name": "default.recipient",
     "type": "java.lang.String",
     "description": "A description for 'default.recipient'"
+  },
+  {
+    "name": "javax.net.ssl.SSLSocketFactory.fallback",
+    "type": "java.lang.String",
+    "description": "A description for 'javax.net.ssl.SSLSocketFactory.fallback'"
   }
-]} 
+]}
