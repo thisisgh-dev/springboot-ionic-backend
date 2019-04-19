@@ -25,6 +25,9 @@ public class ClientNewDTO implements Serializable {
 	private String cpfOrCnpj;
 	
 	private Integer type;
+	
+	@NotEmpty (message = "This field can not be empty")
+	private String password;
 
 	@NotEmpty (message = "This field can not be empty")
 	private String streetAddress;
@@ -141,5 +144,13 @@ public class ClientNewDTO implements Serializable {
 
 	public void setCityId(Integer cityId) {
 		this.cityId = cityId;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }
