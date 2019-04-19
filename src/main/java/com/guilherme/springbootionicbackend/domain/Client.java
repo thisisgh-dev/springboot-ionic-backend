@@ -30,12 +30,12 @@ public class Client implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
-	
+
 	@Column(unique = true)
 	private String email;
 	private String cpfOrCnpj;
 	private Integer type;
-	
+
 	@JsonIgnore
 	private String password;
 
@@ -46,9 +46,9 @@ public class Client implements Serializable {
 	@ElementCollection
 	@CollectionTable(name = "phoneNumber")
 	private Set<String> phoneNumber = new HashSet<>();
-	
-	@ElementCollection(fetch=FetchType.EAGER)
-	@CollectionTable(name="profile")
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "profile")
 	private Set<Integer> profiles = new HashSet<>();
 
 	@JsonIgnore // @JsonBackReference
@@ -133,23 +133,22 @@ public class Client implements Serializable {
 	public void setOrders(List<PurchaseOrder> orders) {
 		this.orders = orders;
 	}
-	
+
 	public String getPassword() {
 		return password;
 	}
 
 	public void setPassword(String password) {
-		this.password = password;		
+		this.password = password;
 	}
-	
-	public Set<Profile> getPerfis() {
+
+	public Set<Profile> getProfiles() {
 		return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
 	}
 
- 	public void addProfile(Profile profile) {
+	public void addProfile(Profile profile) {
 		profiles.add(profile.getCod());
 	}
-
 
 	@Override
 	public int hashCode() {
