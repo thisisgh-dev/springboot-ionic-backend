@@ -20,6 +20,7 @@ import com.guilherme.springbootionicbackend.domain.Product;
 import com.guilherme.springbootionicbackend.domain.PurchaseOrder;
 import com.guilherme.springbootionicbackend.domain.State;
 import com.guilherme.springbootionicbackend.domain.enums.ClientType;
+import com.guilherme.springbootionicbackend.domain.enums.Profile;
 import com.guilherme.springbootionicbackend.domain.enums.StatusPayment;
 import com.guilherme.springbootionicbackend.repositories.AddressRepository;
 import com.guilherme.springbootionicbackend.repositories.CategoryRepository;
@@ -127,14 +128,20 @@ public class DBService {
 
 		Client cli1 = new Client(null, "Maria Silva", "mandeparaguilherme@gmail.com", "02316328891", ClientType.NATURALPERSON, pe.encode("123"));
 		cli1.getPhoneNumber().addAll(Arrays.asList("9886644", "9786644"));
+		
+		Client cli2 = new Client(null, "Ana Costa", "dreadstyle@live.com", "31628382740", ClientType.NATURALPERSON, pe.encode("123"));
+		cli2.getPhoneNumber().addAll(Arrays.asList("93883321", "34252625"));
+		cli2.addProfile(Profile.ADMIN);
 
 		Address ad1 = new Address(null, "Rua Flores", "300", "Apto 303", "Jardim", "40478349", cli1, cty1);
 		Address ad2 = new Address(null, "Avenida Matos", "105", "Sala 800", "Centro", "43028336", cli1, cty2);
+		Address ad3 = new Address(null, "Avenida Floriano", "2106", null, "Centro", "281777012", cli2, cty2);
 
 		cli1.getAddresses().addAll(Arrays.asList(ad1, ad2));
+		cli2.getAddresses().addAll(Arrays.asList(ad3));
 
-		clientRepository.saveAll(Arrays.asList(cli1));
-		addressRepository.saveAll(Arrays.asList(ad1, ad2));
+		clientRepository.saveAll(Arrays.asList(cli1, cli2));
+		addressRepository.saveAll(Arrays.asList(ad1, ad2, ad3));
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
