@@ -10,20 +10,19 @@ import com.guilherme.springbootionicbackend.domain.Category;
 
 public class CategoryDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
-	
-	@NotEmpty (message = "This field can not be empty")
-	@Length (min = 5, max = 80, message = "The size must be between 5 and 80 characters")
+
+	@NotEmpty(message = "This field can not be empty")
+	@Length(min = 5, max = 80, message = "The size must be between 5 and 80 characters")
 	private String name;
-	
-	public CategoryDTO () {		
+
+	public CategoryDTO() {
 	}
-	
-	public CategoryDTO (Category obj) {	
+
+	public CategoryDTO(Category obj) {
 		id = obj.getId();
 		name = obj.getName();
-		
 	}
 
 	public Integer getId() {
@@ -41,6 +40,5 @@ public class CategoryDTO implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
 
 }

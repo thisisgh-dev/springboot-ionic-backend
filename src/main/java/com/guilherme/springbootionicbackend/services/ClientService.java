@@ -16,10 +16,13 @@ import com.guilherme.springbootionicbackend.domain.Address;
 import com.guilherme.springbootionicbackend.domain.City;
 import com.guilherme.springbootionicbackend.domain.Client;
 import com.guilherme.springbootionicbackend.domain.enums.ClientType;
+import com.guilherme.springbootionicbackend.domain.enums.Profile;
 import com.guilherme.springbootionicbackend.dto.ClientDTO;
 import com.guilherme.springbootionicbackend.dto.ClientNewDTO;
 import com.guilherme.springbootionicbackend.repositories.AddressRepository;
 import com.guilherme.springbootionicbackend.repositories.ClientRepository;
+import com.guilherme.springbootionicbackend.security.UserSS;
+import com.guilherme.springbootionicbackend.services.exceptions.AuthorizationException;
 import com.guilherme.springbootionicbackend.services.exceptions.DataIntegrityException;
 import com.guilherme.springbootionicbackend.services.exceptions.ObjectNotFountException;
 
@@ -31,15 +34,22 @@ public class ClientService {
 
 	@Autowired
 	private AddressRepository addressRepository;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder pe;
-	
+
 	public Client find(Integer id) {
+
+		UserSS user = UserService.authenticated();
+		if (user == null || !user.hasRole(Profile.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Access denied");
+		}
+
 		Optional<Client> obj = repo.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFountException("Object not found! Id: " + id + ", Type: " + Client.class.getName()));
+		return obj.orElseThrow(
+				() -> new ObjectNotFountException("Object not found! Id: " + id + ", Type: " + Client.class.getName()));
 	}
-	
+
 	@Transactional
 	public Client insert(Client obj) {
 		obj.setId(null);
@@ -47,51 +57,52 @@ public class ClientService {
 		addressRepository.saveAll(obj.getAddresses());
 		return obj;
 	}
-	
+
 	public Client update(Client obj) {
 		Client newObj = find(obj.getId());
 		updateData(newObj, obj);
 		return repo.save(newObj);
 
 	}
-	
+
 	private void updateData(Client newObj, Client obj) {
 		newObj.setName(obj.getName());
 		newObj.setEmail(obj.getEmail());
-	
+
 	}
-	
+
 	public void delete(Integer id) {
 		find(id);
 		try {
-		repo.deleteById(id);
-		}
-		catch (DataIntegrityViolationException e) {
+			repo.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("It is not possible to exclude because there are related order.");
-			
+
 		}
 	}
-	
-	public List<Client> findAll(){
+
+	public List<Client> findAll() {
 		return repo.findAll();
 	}
-	
-	public Page<Client> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+
+	public Page<Client> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		return repo.findAll(pageRequest);		
+		return repo.findAll(pageRequest);
 	}
-	
+
 	public Client fromDto(ClientDTO objDto) {
 		return new Client(objDto.getId(), objDto.getName(), objDto.getEmail(), null, null, null);
 	}
-	
+
 	public Client fromDto(ClientNewDTO objDto) {
-		Client client = new Client(null, objDto.getName(), objDto.getEmail(), objDto.getCpfOrCnpj(), ClientType.toEnum(objDto.getType()), pe.encode(objDto.getPassword()));
+		Client client = new Client(null, objDto.getName(), objDto.getEmail(), objDto.getCpfOrCnpj(),
+				ClientType.toEnum(objDto.getType()), pe.encode(objDto.getPassword()));
 		City city = new City(objDto.getCityId(), null, null);
-		Address address = new Address(null, objDto.getStreetAddress(), objDto.getNumber(), objDto.getComplement(), objDto.getNeighborhood(),objDto.getZipCode(), client, city);
+		Address address = new Address(null, objDto.getStreetAddress(), objDto.getNumber(), objDto.getComplement(),
+				objDto.getNeighborhood(), objDto.getZipCode(), client, city);
 		client.getAddresses().add(address);
 		client.getPhoneNumber().add(objDto.getTelephone1());
-		if (objDto.getTelephone2()!=null) {
+		if (objDto.getTelephone2() != null) {
 			client.getPhoneNumber().add(objDto.getTelephone2());
 		}
 		return client;
